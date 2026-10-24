@@ -1,18 +1,15 @@
 module.exports = {
   apps: [{
     name: "empleados-api",
-    script: "./src/index.ts",  // ← Cambiar si tu archivo principal es diferente
-    instances: "max",       // Usa todos los núcleos de CPU
-    exec_mode: "cluster",   // Modo cluster para alta disponibilidad
+    script: "./src/index.ts",
+    instances: 1,                    // ✅ Una instancia es suficiente
+    autorestart: true,
+    watch: false,
     interpreter: 'tsx',
-    // Variables de entorno de producción
+    max_memory_restart: '1G',
     env: {
       NODE_ENV: "production",
-      PORT: 3000,
-      // Agregar tus variables aquí:
-      // DB_HOST: "tu-base-de-datos.com",
-      // DB_USER: "usuario",
-      // DB_PASS: "password"
+      PORT: 3000
     },
     
     // Configuración de logs
@@ -26,12 +23,12 @@ module.exports = {
   deploy: {
     production: {
       user: 'ubuntu',
-      host: 'http://3.130.246.188',  // ← CAMBIAR POR TU IP
-      ref: 'origin/main',            // o 'origin/master' según tu rama
-      repo: 'git@github.com:adsingo/empleados_backend.git',  // ← CAMBIAR
+      host: '3.130.246.188',         // ✅ SIN http://
+      ref: 'origin/main',
+      repo: 'git@github.com:adsingo/empleados_backend.git',
       path: '/var/www/mi-app',
       'post-deploy': 'mkdir -p logs && npm install && pm2 reload ecosystem.config.js --env production && pm2 save',
-      ssh_options: "IdentityFile=~/.ssh/mi-clave-ec2.pem"  // ← CAMBIAR por ruta a tu .pem
+      ssh_options: "IdentityFile=~/.ssh/mi-clave-ec2.pem"
     }
   }
 };
