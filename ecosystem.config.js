@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: "empleados-api",
-    script: "./src/index.ts",
+    script: "./code-main/src/index.ts",
     instances: 1,                    // ✅ Una instancia es suficiente
     autorestart: true,
     watch: false,
